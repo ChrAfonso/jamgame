@@ -21,14 +21,11 @@ public class MusicManager : MonoBehaviour {
 
   public void PlayTrack(Theme theme) {
     switch (theme) { 
-      case Theme.Intro:
-        audio.clip = clipIntro;
-        break;
 
-	  case Theme.Countdown:
-			audio.clip = clipCountdown;
-			break;
-	  
+      case Theme.Intro:
+            audio.clip = clipIntro;
+            break;
+			  
 	  case Theme.Countdown:
 			audio.clip = clipCountdown;
 			break;
