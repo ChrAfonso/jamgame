@@ -79,13 +79,13 @@ public class GameController : MonoBehaviour {
       // dirty!
       switch(p) {
         case 0:
-          startPosition = Playground.min.position;
-          startDirection = Vector3.right;
+          startPosition = Playground.player1_spawn.position;
+          startDirection = Playground.player1_spawn.rotation * Vector3.right;
           keyCodes = new KeyCode[3] { KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.DownArrow };
           break;
         case 1:
-          startPosition = Playground.max.position;
-          startDirection = Vector3.left;
+          startPosition = Playground.player2_spawn.position;
+          startDirection = Playground.player2_spawn.rotation * Vector3.right;
           keyCodes = new KeyCode[3] { KeyCode.A, KeyCode.D, KeyCode.S };
           break;
         default:
