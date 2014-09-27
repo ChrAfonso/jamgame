@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour {
   public Transform transformSpriteJam;
   public float reloadPercentagePerFruit = 0.3f;
 
+  public float jamConsumptionPerSecond = 0.1f;
+  public float jamTrailDeactivationDelay = 2.0f;
+
   private float jamFillPercentage;
   public float JamFillPercentage {
     get { return jamFillPercentage; }
@@ -72,6 +75,8 @@ public class PlayerController : MonoBehaviour {
 
   public bool IsDead { get; private set; }
 
+  private bool IsSpittingJam { get; set; }
+
   // Use this for initialization
   public void Start() {
     if (DefaultScale == -1) {
@@ -89,8 +94,9 @@ public class PlayerController : MonoBehaviour {
     DDirection = 0;
     SlippingTimer = -1;
     FlyTimer = 0;
-    JamFillPercentage = 0;
+    JamFillPercentage = 1;
     IsDead = false;
+    JamTrail.pausing = true;
 
     runLoop.Play();
     slideLoop.Stop();
@@ -175,6 +181,23 @@ public class PlayerController : MonoBehaviour {
     if (JamTrail != null) {
       JamTrail.transform.position = transform.position + Direction * -1.0f * jamTrailOffset;
     }
+
+    if (IsSpittingJam == false && Input.GetKeyUp(keyJam)) {
+      IsSpittingJam = true;
+      JamTrail.pausing = false;
+      StartCoroutine(StopJamTrailWithDelay(jamTrailDeactivationDelay));
+    }
+  }
+
+  private IEnumerator StopJamTrailWithDelay(float jamTrailDeactivationDelay) {
+    while (jamTrailDeactivationDelay > 0 && JamFillPercentage > 0) {
+      jamTrailDeactivationDelay -= Time.deltaTime;
+      JamFillPercentage -= jamConsumptionPerSecond * Time.deltaTime;
+      yield return null;
+    }
+        
+    JamTrail.pausing = true;
+    IsSpittingJam = false;
   }
 
   private void UpdateStateFlying() {

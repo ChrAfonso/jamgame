@@ -97,7 +97,7 @@ public class GameController : MonoBehaviour {
       PlayerController controller = (PlayerController) player.GetComponent<PlayerController>();
       controller.keyLeft = keyCodes[0];
       controller.keyRight = keyCodes[1];
-//    controller.keyJam = keyCodes[2];
+      controller.keyJam = keyCodes[2];
 
       controller.Direction = startDirection;
 
