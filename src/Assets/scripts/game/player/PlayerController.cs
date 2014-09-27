@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
   public AudioClip fxFly;
   public AudioClip fxDestroy;
 
+  public float breakFastPushForce = 100;
+
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
 
@@ -110,7 +112,9 @@ public class PlayerController : MonoBehaviour {
 
   private void HandleCollisionWithBreakfast(Collision2D other) {
     if (other.contacts.Length > 0) {
-      Direction = other.contacts[0].normal;
+      Vector2 otherNormal = other.contacts[0].normal;
+      Direction = otherNormal;
+      other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);      
 
       // TODO: trigger sound effect for collision with breakfast
     }
