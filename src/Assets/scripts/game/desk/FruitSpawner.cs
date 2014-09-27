@@ -17,11 +17,11 @@ public class FruitSpawner : MonoBehaviour {
   public bool SpawningEnabled {
     get { return spawningEnabled; }
     set {
-      if (spawningEnabled == false) {
-        spawningEnabled = value;
+      spawningEnabled = value;
+      if (spawningEnabled) {
         StartCoroutine(SpawnFruits());
       } else {
-        spawningEnabled = value;
+        StopAllCoroutines();
       }
     }
   }
@@ -59,6 +59,6 @@ public class FruitSpawner : MonoBehaviour {
     float delay = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
     GameObject.Destroy(goFruit, delay);
   }
-  
+
 
 }
