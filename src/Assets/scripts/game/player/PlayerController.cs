@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
   public AudioClip fxCollectFruit;
+  public AudioClip fxFly;
+  public AudioClip fxDestroy;
 
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour {
 
   private void UpdateStateFlying() {
     if (FlyTimer == 0) {
-      // TODO play fly audio
+	  audio.PlayOneShot(fxFly);
     }
 
     float scale = 1 - Mathf.Exp(FlyTimer / FlyDuration);
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour {
     FlyTimer += Time.deltaTime;
 
     if (FlyTimer > FlyDuration) {
-      // TODO play destroy audio
+	  audio.PlayOneShot(fxFly);
       // TODO hide jar, show broken mess? (visible?)
 
       transform.localScale = Vector3.one; // restore size
