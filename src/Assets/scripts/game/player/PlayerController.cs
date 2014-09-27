@@ -221,6 +221,7 @@ public class PlayerController : MonoBehaviour {
   private void CollectFruit(Collider2D fruitCollider) {
     GameObject.Destroy(fruitCollider.gameObject);
     audio.PlayOneShot(fxCollectFruit);
+    JamFillPercentage += reloadPercentagePerFruit;
   }
 
   private void UpdateSpeed(obstacle Obstacle) {
