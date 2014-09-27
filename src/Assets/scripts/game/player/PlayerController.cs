@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
-  
+
   public float Speed { get; set; } // TODO: set default speed, if sped up/slowed down by jam, ease back into default speed slowly?
   public Vector3 Direction { get; set; }
   private float DDirection;
@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
   private float FlyDuration = 2000;
 
   // Use this for initialization
-  public void Start () {
+  public void Start() {
     currentState = controlState.GAME;
 
     Speed = 5;
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
   }
 
   // Update is called once per frame
-  public void Update () {
+  public void Update() {
     switch (currentState) {
       case controlState.GAME:
         UpdateStateGame();
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour {
 
   private void UpdateStateFlying() {
     if (FlyTimer == 0) {
-	  audio.PlayOneShot(fxFly);
+      audio.PlayOneShot(fxFly);
     }
 
     float scale = 1 - Mathf.Exp(FlyTimer / FlyDuration);
@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour {
     FlyTimer += Time.deltaTime;
 
     if (FlyTimer > FlyDuration) {
-	  audio.PlayOneShot(fxFly);
+      audio.PlayOneShot(fxFly);
       // TODO hide jar, show broken mess? (visible?)
 
       transform.localScale = Vector3.one; // restore size
@@ -102,18 +102,22 @@ public class PlayerController : MonoBehaviour {
   public void OnCollisionEnter2D(Collision2D collision) {
     Debug.Log("OnCollisionEnter2D: " + collision.gameObject.name);
     switch (collision.gameObject.tag) {
-       case "breakfast":
+      case "breakfast":
         HandleCollisionWithBreakfast(collision);
-         break;
-     }
+        break;
+    }
   }
 
   private void HandleCollisionWithBreakfast(Collision2D other) {
-    
+    if (other.contacts.Length > 0) {
+      Direction = other.contacts[0].normal;
+
+      // TODO: trigger sound effect for collision with breakfast
+    }
   }
 
   private void CollectFruit(Collider2D fruitCollider) {
     GameObject.Destroy(fruitCollider.gameObject);
-		audio.PlayOneShot(fxCollectFruit);
+    audio.PlayOneShot(fxCollectFruit);
   }
 }
