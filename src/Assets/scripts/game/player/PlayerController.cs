@@ -112,20 +112,17 @@ public class PlayerController : MonoBehaviour {
   }
 
   private void HandleCollisionWithBreakfast(Collision2D other) {
-<<<<<<< HEAD
+
 
     if (other.contacts.Length > 0) {
       Direction = other.contacts[0].normal;
 
-		audio.PlayOneShot(fxBump);
-=======
-    if (other.contacts.Length > 0) {
       Vector2 otherNormal = other.contacts[0].normal;
       Direction = otherNormal;
       other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);      
+		
+	  audio.PlayOneShot(fxBump);
 
-      // TODO: trigger sound effect for collision with breakfast
->>>>>>> FETCH_HEAD
     }
   }
 
