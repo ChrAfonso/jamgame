@@ -9,64 +9,56 @@ public class PlayerController : MonoBehaviour {
 
   public float breakFastPushForce = 100;
 
-  public KeyCode keyLeft = KeyCode.LeftArrow;
-  public KeyCode keyRight = KeyCode.RightArrow;
-
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
 
-  public enum obstacle { SLIPPERY, STICKY };
-  public const float SPEED_SLIPPERY = 7;
-  public const float SPEED_STICKY = 2;
-
-  private Vector3 OriginalPosition;
-  private float DefaultScale = -1;
-  public float Speed { get; set; }
-
+  public float Speed { get; set; } // TODO: set default speed, if sped up/slowed down by jam, ease back into default speed slowly?
   public Vector3 Direction { get; set; }
   private float DDirection;
   public float DirectionChangeSpeed { get; set; }
 
-  public float SpeedDefault = 4;
-  public float Acceleration = 2;
-  public float FallSlowdown = 4;
-
-  private float SlippingTimer = -1;
-  public float SlippingDuration = 2;
-
   private float FlyTimer = 0;
-  public float FlyDuration = 2;
+  private float FlyDuration = 2000;
+
+
+  public float jamFillMin;
+  public float jamFillMax;
+  public Transform transformSpriteJam;
+  public float reloadPercentagePerFruit = 0.3f;
+
+  private float jamFillPercentage;
+  public float JamFillPercentage {
+    get { return jamFillPercentage; }
+    set {
+      jamFillPercentage = Mathf.Clamp01(value);
+
+      if (transformSpriteJam != null) {
+        Vector3 localScale = transformSpriteJam.localScale;
+        localScale.y = jamFillMin + (jamFillMax - jamFillMin) * jamFillPercentage;
+        transformSpriteJam.localScale = localScale;
+      }
+    }
+  }
+
 
   // Use this for initialization
-  public void Start () {
-    if (DefaultScale == -1) {
-      DefaultScale = transform.localScale.x;
-      OriginalPosition = transform.position;
-    } else {
-      transform.localScale = Vector3.one * DefaultScale;
-      transform.position = OriginalPosition;
-    }
-
   public void Start() {
     currentState = controlState.GAME;
 
-    Speed = 0;
+    Speed = 5;
     Direction = new Vector3(1, 0, 0);
-    DirectionChangeSpeed = 360;
+    DirectionChangeSpeed = 200;
+    jamFillPercentage = 0;
   }
 
   public void setControlState(controlState NewState) {
-    if(NewState == controlState.GAME) {
-      Start(); // TEMP
-    } else if (currentState == controlState.GAME && NewState == controlState.FLYING) {
-      print("Aaaaaaaaaah!");
+    if (currentState == controlState.GAME && NewState == controlState.FLYING) {
       FlyTimer = 0;
-      currentState = NewState;
-    } else if (NewState == controlState.GAMEOVER) {
-      print("GameOver!");
+    } else if (currentState == controlState.FLYING && NewState == controlState.GAMEOVER) {
       FlyTimer = 0;
-      currentState = NewState;
     }
+
+    currentState = NewState;
   }
 
   // Update is called once per frame
@@ -78,42 +70,23 @@ public class PlayerController : MonoBehaviour {
       case controlState.FLYING:
         UpdateStateFlying();
         break;
-      case controlState.GAMEOVER:
-        // TEMP instant reset
-        setControlState(controlState.GAME);
-        break;
     }
 
     transform.position += (Direction * (Speed * Time.deltaTime));
   }
 
   private void UpdateStateGame() {
-    if (Input.GetKeyDown(keyLeft)) {
+    if (Input.GetKeyDown(KeyCode.LeftArrow)) {
       DDirection = 1;
-    } else if (Input.GetKeyDown(keyRight)) {
+    } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
       DDirection = -1;
-    } else if (Input.GetKeyUp(keyLeft) && DDirection == 1) {
+    } else if (Input.GetKeyUp(KeyCode.LeftArrow) && DDirection == 1) {
       DDirection = 0;
-    } else if (Input.GetKeyUp(keyRight) && DDirection == -1) {
+    } else if (Input.GetKeyUp(KeyCode.RightArrow) && DDirection == -1) {
       DDirection = 0;
     }
 
-    float TurnDirection;
-    if (SlippingTimer == -1) {
-      // normal, no slipping
-      TurnDirection = DDirection;
-    } else {
-      // twist direction during slipping
-      TurnDirection = Mathf.Sin(SlippingTimer / SlippingDuration * 4 * Mathf.PI);
-
-      SlippingTimer += Time.deltaTime;
-      if (SlippingTimer > SlippingDuration) {
-        SlippingTimer = -1;
-      }
-    }
-
-    Speed = Mathf.Lerp(Speed, SpeedDefault, Time.deltaTime * Acceleration);
-    Direction = Quaternion.AngleAxis(TurnDirection * DirectionChangeSpeed * Time.deltaTime, new Vector3(0, 0, 1)) * Direction;
+    Direction = Quaternion.AngleAxis(DDirection * DirectionChangeSpeed * Time.deltaTime, new Vector3(0, 0, 1)) * Direction;
   }
 
   private void UpdateStateFlying() {
@@ -121,7 +94,7 @@ public class PlayerController : MonoBehaviour {
       audio.PlayOneShot(fxFly);
     }
 
-    float scale = 0.5f * (1 - Mathf.Pow(FlyTimer / FlyDuration, 2));
+    float scale = 1 - Mathf.Exp(FlyTimer / FlyDuration);
     transform.localScale = Vector3.one * scale;
 
     FlyTimer += Time.deltaTime;
@@ -130,25 +103,23 @@ public class PlayerController : MonoBehaviour {
       audio.PlayOneShot(fxFly);
       // TODO hide jar, show broken mess? (visible?)
 
+      transform.localScale = Vector3.one; // restore size
       setControlState(controlState.GAMEOVER);
     }
-
-    Speed = Mathf.Lerp(Speed, 0, Time.deltaTime * FallSlowdown);
   }
 
   public void OnTriggerEnter2D(Collider2D other) {
     Debug.Log("OnTriggerEnter2D: " + other.name);
     switch (other.gameObject.tag) {
       case "fruit":
-        print("yum!");
         CollectFruit(other);
+
         break;
       case "borders":
-        setControlState(controlState.FLYING);
+        // TODO: set control state
         break;
       case "jam":
-        print("Wheeeeeeee!");
-        UpdateSpeed(obstacle.SLIPPERY);
+        // TODO: change speed etc.
         break;
     }
   }
@@ -170,9 +141,9 @@ public class PlayerController : MonoBehaviour {
 
       Vector2 otherNormal = other.contacts[0].normal;
       Direction = otherNormal;
-      other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);      
-		
-	  audio.PlayOneShot(fxBump);
+      other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);
+
+      audio.PlayOneShot(fxBump);
 
     }
   }
@@ -180,21 +151,8 @@ public class PlayerController : MonoBehaviour {
   private void CollectFruit(Collider2D fruitCollider) {
     GameObject.Destroy(fruitCollider.gameObject);
     audio.PlayOneShot(fxCollectFruit);
-  }
 
-  private void UpdateSpeed(obstacle Obstacle) {
-    switch (Obstacle) {
-      case obstacle.SLIPPERY:
-        Speed = SPEED_SLIPPERY;
-        StartSlipping();
-        break;
-      case obstacle.STICKY:
-        Speed = SPEED_STICKY;
-        break;
-    }
-  }
-
-  private void StartSlipping() {
-    SlippingTimer = 0;
+    // reload jam
+    JamFillPercentage += reloadPercentagePerFruit;
   }
 }
