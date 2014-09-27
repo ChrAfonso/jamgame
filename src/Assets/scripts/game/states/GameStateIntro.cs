@@ -16,6 +16,7 @@ using UnityEngine;
 
     public override void OnEnter(object onEnterParams = null) {
       GameController.Instance.BreakfastSpawner.Cleanup();
+      GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.Intro);
     }
 
     public override void OnLeave() {

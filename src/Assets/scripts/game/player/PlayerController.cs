@@ -230,6 +230,7 @@ public class PlayerController : MonoBehaviour {
 
       Vector2 otherNormal = other.contacts[0].normal;
       Direction = otherNormal;
+      Speed = 0;
       other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);
 
       audio.PlayOneShot(fxBump);

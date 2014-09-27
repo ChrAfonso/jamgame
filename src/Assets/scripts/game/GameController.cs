@@ -28,6 +28,13 @@ public class GameController : MonoBehaviour {
     }
   }
 
+  public MusicManager musicManager;
+  public MusicManager MusicManager {
+    get {
+      return musicManager;
+    }
+  }
+
   private static GameController instance;
   public static GameController Instance {
     get {
