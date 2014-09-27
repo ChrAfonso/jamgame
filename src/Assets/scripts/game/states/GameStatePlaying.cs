@@ -14,7 +14,7 @@ using System.Text;
     }
 
     public override void OnEnter(object onEnterParams = null) {
-      
+      GameController.Instance.BreakfastSpawner.Spawn();
     }
 
     public override void OnLeave() {
