@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour {
   public const float SPEED_SLIPPERY = 7;
   public const float SPEED_STICKY = 2;
 
+  private Vector3 OriginalPosition;
+  private float DefaultScale = -1;
   public float Speed { get; set; }
 
   public Vector3 Direction { get; set; }
