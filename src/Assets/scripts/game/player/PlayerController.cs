@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour {
   public AudioClip fxFly;
   public AudioClip fxDestroy;
 
+  public KeyCode keyLeft = KeyCode.LeftArrow;
+  public KeyCode keyRight = KeyCode.RightArrow;
+
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
 
@@ -56,19 +59,24 @@ public class PlayerController : MonoBehaviour {
       case controlState.FLYING:
         UpdateStateFlying();
         break;
+      case controlState.GAMEOVER:
+        // TEMP instant reset
+        setControlState(controlState.GAME);
+        transform.position = OriginalPosition;
+        break;
     }
 
     transform.position += (Direction * (Speed * Time.deltaTime));
   }
 
   private void UpdateStateGame() {
-    if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+    if (Input.GetKeyDown(keyLeft)) {
       DDirection = 1;
-    } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+    } else if (Input.GetKeyDown(keyRight)) {
       DDirection = -1;
-    } else if (Input.GetKeyUp(KeyCode.LeftArrow) && DDirection == 1) {
+    } else if (Input.GetKeyUp(keyLeft) && DDirection == 1) {
       DDirection = 0;
-    } else if (Input.GetKeyUp(KeyCode.RightArrow) && DDirection == -1) {
+    } else if (Input.GetKeyUp(keyRight) && DDirection == -1) {
       DDirection = 0;
     }
 
