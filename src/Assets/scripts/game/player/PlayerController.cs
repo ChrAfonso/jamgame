@@ -68,13 +68,13 @@ public class PlayerController : MonoBehaviour {
     if(NewState == controlState.GAME) {
       Start();
     } else if (currentState == controlState.GAME && NewState == controlState.FLYING) {
-      print("Aaaaaaaaaah!");
+      Debug.Log("Aaaaaaaaaah!");
       runLoop.Stop();
       slideLoop.Stop();
       FlyTimer = 0;
       currentState = NewState;
     } else if (NewState == controlState.GAMEOVER) {
-      print("GameOver!");
+      Debug.Log("GameOver!");
       runLoop.Stop();
       slideLoop.Stop();
       FlyTimer = 0;
@@ -159,14 +159,14 @@ public class PlayerController : MonoBehaviour {
     Debug.Log("OnTriggerEnter2D: " + other.name);
     switch (other.gameObject.tag) {
       case "fruit":
-        print("yum!");
+        Debug.Log("yum!");
         CollectFruit(other);
         break;
       case "borders":
         setControlState(controlState.FLYING);
         break;
       case "jam":
-        print("Wheeeeeeee!");
+        Debug.Log("Wheeeeeeee!");
         runLoop.Stop();
         slideLoop.Play();
         UpdateSpeed(obstacle.SLIPPERY);
