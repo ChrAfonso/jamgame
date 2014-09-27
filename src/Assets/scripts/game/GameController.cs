@@ -7,6 +7,20 @@ public class GameController : MonoBehaviour {
 
   public bool showMouse = false;
 
+  public Playground playground;
+  public Playground Playground {
+    get {
+      return playground;
+    }
+  }
+
+  public BreakfastSpawner breakfastSpawner;
+  public BreakfastSpawner BreakfastSpawner {
+    get {
+      return breakfastSpawner;
+    }
+  }
+
   private static GameController instance;
   public static GameController Instance {
     get {
@@ -26,7 +40,7 @@ public class GameController : MonoBehaviour {
     states.Add(new GameStatePlaying("GameStatePlaying"));
     states.Add(new GameStateGameOver("GameStateGameOver"));
     states.Add(new GameStateCredits("GameStateCredits"));
-    
+
     StateMachine = StateMachine.Create("state_machine", states, "GameStateIntro");
   }
 

@@ -18,7 +18,7 @@ using System.Text;
     }
 
     public override void OnLeave() {
-      
+      GameController.Instance.BreakfastSpawner.Cleanup();
     }
 
     public override void OnUpdate() {
