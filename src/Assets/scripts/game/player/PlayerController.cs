@@ -41,6 +41,25 @@ public class PlayerController : MonoBehaviour {
   private float FlyTimer = 0;
   public float FlyDuration = 2;
 
+  public float jamFillMin;
+  public float jamFillMax;
+  public Transform transformSpriteJam;
+  public float reloadPercentagePerFruit = 0.3f;
+
+  private float jamFillPercentage;
+  public float JamFillPercentage {
+    get { return jamFillPercentage; }
+    set {
+      jamFillPercentage = Mathf.Clamp01(value);
+
+      if (transformSpriteJam != null) {
+        Vector3 localScale = transformSpriteJam.localScale;
+        localScale.y = jamFillMin + (jamFillMax - jamFillMin) * jamFillPercentage;
+        transformSpriteJam.localScale = localScale;
+      }
+    }
+  }
+
   // Use this for initialization
   public void Start () {
     if (DefaultScale == -1) {
@@ -59,6 +78,7 @@ public class PlayerController : MonoBehaviour {
     DDirection = 0;
     SlippingTimer = -1;
     FlyTimer = 0;
+    JamFillPercentage = 0;
 
     runLoop.Play();
     slideLoop.Stop();
