@@ -15,7 +15,7 @@ using UnityEngine;
     }
 
     public override void OnEnter(object onEnterParams = null) {
-      
+      GameController.Instance.BreakfastSpawner.Cleanup();
     }
 
     public override void OnLeave() {

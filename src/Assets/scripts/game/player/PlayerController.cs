@@ -95,6 +95,19 @@ public class PlayerController : MonoBehaviour {
     }
   }
 
+  public void OnCollisionEnter2D(Collision2D collision) {
+    Debug.Log("OnCollisionEnter2D: " + collision.gameObject.name);
+    switch (collision.gameObject.tag) {
+       case "breakfast":
+        HandleCollisionWithBreakfast(collision);
+         break;
+     }
+  }
+
+  private void HandleCollisionWithBreakfast(Collision2D other) {
+    
+  }
+
   private void CollectFruit(Collider2D fruitCollider) {
     GameObject.Destroy(fruitCollider.gameObject);
   }
