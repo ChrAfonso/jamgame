@@ -24,7 +24,7 @@ using UnityEngine;
     }
 
     public override void OnUpdate() {
-      if (Input.GetKeyUp(KeyCode.Space)) {
+      if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Return)) {
         GameController.Instance.ChangeState("GameStatePlaying");
       }
     }

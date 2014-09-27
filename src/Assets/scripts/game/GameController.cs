@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-  public Array Players { get; private set; }
+  public List<PlayerController> Players { get; private set; }
   public int numPlayers = 2;
   public GameObject PlayerPrefab;
 
@@ -60,6 +60,8 @@ public class GameController : MonoBehaviour {
     states.Add(new GameStateCredits("GameStateCredits"));
 
     StateMachine = StateMachine.Create("state_machine", states, "GameStateIntro");
+
+    Players = new List<PlayerController>();
   }
 
   public void ChangeState(string stateName, object onEnterParams = null) {
@@ -74,6 +76,7 @@ public class GameController : MonoBehaviour {
     for (int p = 0; p < numPlayers; p++) {
       Debug.Log("Create Player " + p);
 
+      // dirty!
       switch(p) {
         case 0:
           startPosition = Playground.min.position;
@@ -98,6 +101,14 @@ public class GameController : MonoBehaviour {
 
       controller.Direction = startDirection;
 
+      Players.Add(controller);
     }
+  }
+
+  public void OnPlayerDead() {
+    Players.ForEach(player => GameObject.Destroy(player.gameObject));
+    Players.Clear();
+
+    ChangeState("GameStateGameOver");
   }
 }

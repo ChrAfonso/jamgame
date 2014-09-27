@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
   public class GameStateGameOver : AbstractState  {
 
@@ -22,6 +23,8 @@ using System.Text;
     }
 
     public override void OnUpdate() {
-      
+      if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Return)) {
+        GameController.Instance.ChangeState("GameStateIntro");
+      }
     }
   }

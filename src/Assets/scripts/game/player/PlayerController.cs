@@ -69,6 +69,8 @@ public class PlayerController : MonoBehaviour {
   }
   public float jamTrailOffset = 0.5f;
 
+  public bool IsDead { get; private set; }
+
   // Use this for initialization
   public void Start() {
     if (DefaultScale == -1) {
@@ -87,6 +89,7 @@ public class PlayerController : MonoBehaviour {
     SlippingTimer = -1;
     FlyTimer = 0;
     JamFillPercentage = 0;
+    IsDead = false;
 
     runLoop.Play();
     slideLoop.Stop();
@@ -120,7 +123,8 @@ public class PlayerController : MonoBehaviour {
         UpdateStateFlying();
         break;
       case controlState.GAMEOVER:
-        // TODO trigger game state change
+        IsDead = true;
+        GameController.Instance.OnPlayerDead();
         break;
     }
 
