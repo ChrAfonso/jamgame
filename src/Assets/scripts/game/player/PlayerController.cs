@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
 
   public KeyCode keyLeft = KeyCode.LeftArrow;
   public KeyCode keyRight = KeyCode.RightArrow;
+  public KeyCode keyJam = KeyCode.DownArrow;
 
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
@@ -60,8 +61,16 @@ public class PlayerController : MonoBehaviour {
     }
   }
 
+  public TrailRendererWith2DCollider jamTrail;
+  public TrailRendererWith2DCollider JamTrail {
+    get {
+      return jamTrail;
+    }
+  }
+  public float jamTrailOffset = 0.5f;
+
   // Use this for initialization
-  public void Start () {
+  public void Start() {
     if (DefaultScale == -1) {
       DefaultScale = transform.localScale.x;
       OriginalPosition = transform.position;
@@ -84,7 +93,7 @@ public class PlayerController : MonoBehaviour {
   }
 
   public void setControlState(controlState NewState) {
-    if(NewState == controlState.GAME) {
+    if (NewState == controlState.GAME) {
       Start();
     } else if (currentState == controlState.GAME && NewState == controlState.FLYING) {
       Debug.Log("Aaaaaaaaaah!");
@@ -137,7 +146,7 @@ public class PlayerController : MonoBehaviour {
       // twist direction during slipping
       float SlippingAmount = 1 - (SlippingTimer / SlippingDuration);
       float Correction = -0.045f;
-      TurnDirection = (SlippingAmount * (Mathf.Sin((1 - SlippingAmount) * 16 * Mathf.PI) + Correction)) 
+      TurnDirection = (SlippingAmount * (Mathf.Sin((1 - SlippingAmount) * 16 * Mathf.PI) + Correction))
         + ((1 - SlippingAmount) * DDirection);
 
       SlippingTimer += Time.deltaTime;
@@ -151,6 +160,16 @@ public class PlayerController : MonoBehaviour {
 
     Speed = Mathf.Lerp(Speed, SpeedDefault, Time.deltaTime * Acceleration);
     Direction = Quaternion.AngleAxis(TurnDirection * DirectionChangeSpeed * Time.deltaTime, new Vector3(0, 0, 1)) * Direction;
+
+    if (Direction.x > 0) {
+      transform.rotation = Quaternion.Euler(0, 0, 0);
+    } else {
+      transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
+
+    if (JamTrail != null) {
+      JamTrail.transform.position = transform.position + Direction * -1.0f * jamTrailOffset;
+    }
   }
 
   private void UpdateStateFlying() {
@@ -209,9 +228,9 @@ public class PlayerController : MonoBehaviour {
 
       Vector2 otherNormal = other.contacts[0].normal;
       Direction = otherNormal;
-      other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);      
-		
-	  audio.PlayOneShot(fxBump);
+      other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);
+
+      audio.PlayOneShot(fxBump);
 
     }
   }
