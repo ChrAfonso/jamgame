@@ -153,6 +153,12 @@ public class PlayerController : MonoBehaviour {
 
     Speed = Mathf.Lerp(Speed, SpeedDefault, Time.deltaTime * Acceleration);
     Direction = Quaternion.AngleAxis(TurnDirection * DirectionChangeSpeed * Time.deltaTime, new Vector3(0, 0, 1)) * Direction;
+
+    if (Direction.x > 0) {
+      transform.rotation = Quaternion.Euler(0, 0, 0);
+    } else {
+      transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
   }
 
   private void UpdateStateFlying() {
