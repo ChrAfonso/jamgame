@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour {
       case "fruit":
         CollectFruit(other);
         break;
+      case "borders":
+        // TODO: set control state
+        break;
     }
   }
 
