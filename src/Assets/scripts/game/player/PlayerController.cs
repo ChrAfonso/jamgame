@@ -36,21 +36,33 @@ public class PlayerController : MonoBehaviour {
 
   // Use this for initialization
   public void Start () {
+    if (DefaultScale == -1) {
+      DefaultScale = transform.localScale.x;
+      OriginalPosition = transform.position;
+    } else {
+      transform.localScale = Vector3.one * DefaultScale;
+      transform.position = OriginalPosition;
+    }
+
     currentState = controlState.GAME;
 
     Speed = 0;
     Direction = new Vector3(1, 0, 0);
-    DirectionChangeSpeed = 200;
+    DirectionChangeSpeed = 360;
   }
 
   public void setControlState(controlState NewState) {
-    if (currentState == controlState.GAME && NewState == controlState.FLYING) {
+    if(NewState == controlState.GAME) {
+      Start(); // TEMP
+    } else if (currentState == controlState.GAME && NewState == controlState.FLYING) {
+      print("Aaaaaaaaaah!");
       FlyTimer = 0;
-    } else if (currentState == controlState.FLYING && NewState == controlState.GAMEOVER) {
+      currentState = NewState;
+    } else if (NewState == controlState.GAMEOVER) {
+      print("GameOver!");
       FlyTimer = 0;
+      currentState = NewState;
     }
-
-    currentState = NewState;
   }
 
   // Update is called once per frame
@@ -65,7 +77,6 @@ public class PlayerController : MonoBehaviour {
       case controlState.GAMEOVER:
         // TEMP instant reset
         setControlState(controlState.GAME);
-        transform.position = OriginalPosition;
         break;
     }
 
