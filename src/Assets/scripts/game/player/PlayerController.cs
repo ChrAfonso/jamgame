@@ -2,10 +2,13 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+  public AudioClip fxCollectFruit;
+  public AudioClip fxFly;
+  public AudioClip fxDestroy;
 
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
-
+  
   public float Speed { get; set; } // TODO: set default speed, if sped up/slowed down by jam, ease back into default speed slowly?
   public Vector3 Direction { get; set; }
   private float DDirection;
@@ -63,7 +66,7 @@ public class PlayerController : MonoBehaviour {
 
   private void UpdateStateFlying() {
     if (FlyTimer == 0) {
-      // TODO play fly audio
+	  audio.PlayOneShot(fxFly);
     }
 
     float scale = 1 - Mathf.Exp(FlyTimer / FlyDuration);
@@ -72,7 +75,7 @@ public class PlayerController : MonoBehaviour {
     FlyTimer += Time.deltaTime;
 
     if (FlyTimer > FlyDuration) {
-      // TODO play destroy audio
+	  audio.PlayOneShot(fxFly);
       // TODO hide jar, show broken mess? (visible?)
 
       transform.localScale = Vector3.one; // restore size
@@ -85,6 +88,7 @@ public class PlayerController : MonoBehaviour {
     switch (other.gameObject.tag) {
       case "fruit":
         CollectFruit(other);
+
         break;
       case "borders":
         // TODO: set control state
@@ -110,5 +114,6 @@ public class PlayerController : MonoBehaviour {
 
   private void CollectFruit(Collider2D fruitCollider) {
     GameObject.Destroy(fruitCollider.gameObject);
+		audio.PlayOneShot(fxCollectFruit);
   }
 }
