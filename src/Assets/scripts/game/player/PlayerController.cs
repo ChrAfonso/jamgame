@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour {
   public float FallSlowdown = 4;
 
   private float SlippingTimer = -1;
-  public float SlippingDuration = 2;
+  public float SlippingDuration = 1;
 
   private float FlyTimer = 0;
   public float FlyDuration = 2;
