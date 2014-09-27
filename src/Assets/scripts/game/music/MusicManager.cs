@@ -9,14 +9,16 @@ public class MusicManager : MonoBehaviour {
   public AudioClip clipCountdown;
   public AudioClip clipGame;
   public AudioClip clipCredits;
-  public AudioClip clipGameOver;
+  public AudioClip clipGameOver1;
+  public AudioClip clipGameOver2;
 
   public enum Theme {
     Intro, 
     Countdown,
     Game,
     Credits,
-    GameOver,
+    GameOver1,
+	GameOver2,
   }
 
   public void PlayTrack(Theme theme) {
@@ -38,8 +40,12 @@ public class MusicManager : MonoBehaviour {
 			audio.clip = clipCredits;
 			break;
 
-	  case Theme.GameOver:
-			audio.clip = clipGameOver;
+	  case Theme.GameOver1:
+			audio.clip = clipGameOver1;
+			break;
+
+	  case Theme.GameOver2:
+			audio.clip = clipGameOver2;
 			break;
     }
 
