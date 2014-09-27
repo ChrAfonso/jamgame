@@ -18,12 +18,12 @@ public class PlayerController : MonoBehaviour {
   // Update is called once per frame
   public void Update () {
     if(Input.GetKeyDown(KeyCode.LeftArrow)) {
-      DDirection = -1;
-    } else if(Input.GetKeyDown(KeyCode.RightArrow)) {
       DDirection = 1;
-    } else if(Input.GetKeyUp(KeyCode.LeftArrow) && DDirection == -1) {
+    } else if(Input.GetKeyDown(KeyCode.RightArrow)) {
+      DDirection = -1;
+    } else if(Input.GetKeyUp(KeyCode.LeftArrow) && DDirection == 1) {
       DDirection = 0;
-    } else if (Input.GetKeyUp(KeyCode.RightArrow) && DDirection == 1) {
+    } else if (Input.GetKeyUp(KeyCode.RightArrow) && DDirection == -1) {
       DDirection = 0;
     }
 
