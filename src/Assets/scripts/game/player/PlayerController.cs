@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-  
+  public AudioClip fxCollectFruit;
   public float Speed { get; set; } // TODO: set default speed, if sped up/slowed down by jam, ease back into default speed slowly?
   public Vector3 Direction { get; set; }
   private float DDirection;
@@ -36,11 +36,13 @@ public class PlayerController : MonoBehaviour {
     switch (other.gameObject.tag) {
       case "fruit":
         CollectFruit(other);
+
         break;
     }
   }
 
   private void CollectFruit(Collider2D fruitCollider) {
     GameObject.Destroy(fruitCollider.gameObject);
+		audio.PlayOneShot(fxCollectFruit);
   }
 }
