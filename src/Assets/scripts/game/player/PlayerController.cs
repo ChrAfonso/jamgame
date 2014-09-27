@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour {
 	  audio.PlayOneShot(fxFly);
     }
 
-    float scale = 1 - Mathf.Exp(FlyTimer / FlyDuration);
+    float scale = 0.5f * (1 - Mathf.Pow(FlyTimer / FlyDuration, 2));
     transform.localScale = Vector3.one * scale;
 
     FlyTimer += Time.deltaTime;
@@ -126,9 +126,10 @@ public class PlayerController : MonoBehaviour {
 	  audio.PlayOneShot(fxFly);
       // TODO hide jar, show broken mess? (visible?)
 
-      transform.localScale = Vector3.one; // restore size
       setControlState(controlState.GAMEOVER);
     }
+
+    Speed = Mathf.Lerp(Speed, 0, Time.deltaTime * FallSlowdown);
   }
 
   public void OnTriggerEnter2D(Collider2D other) {
@@ -137,10 +138,8 @@ public class PlayerController : MonoBehaviour {
       case "fruit":
         print("yum!");
         CollectFruit(other);
-
         break;
       case "borders":
-        print("Aaaaaaaaaah!");
         setControlState(controlState.FLYING);
         break;
       case "jam":
