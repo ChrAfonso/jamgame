@@ -7,6 +7,8 @@ public class FruitSpawner : MonoBehaviour {
 
   public List<GameObject> prefabs;
 
+  public AudioClip fxFruitspawner;
+
   public float spawnIntervalMin = 3;
   public float spawnIntervalMax = 6;
   public float destroyDelayMin = 4;
@@ -39,6 +41,7 @@ public class FruitSpawner : MonoBehaviour {
 
       if (SpawningEnabled) {
         SpawnFruitAtRandomPosition();
+		audio.PlayOneShot(fxFruitspawner);
       }
     }
   }
