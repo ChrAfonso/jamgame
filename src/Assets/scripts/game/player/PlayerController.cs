@@ -30,4 +30,17 @@ public class PlayerController : MonoBehaviour {
     Direction = Quaternion.AngleAxis(DDirection * DirectionChangeSpeed * Time.deltaTime, new Vector3(0, 0, 1)) * Direction;
     transform.position += (Direction * (Speed * Time.deltaTime));
   }
+
+  public void OnTriggerEnter2D(Collider2D other) {
+    Debug.Log("OnTriggerEnter2D: " + other.name);
+    switch (other.gameObject.tag) {
+      case "fruit":
+        CollectFruit(other);
+        break;
+    }
+  }
+
+  private void CollectFruit(Collider2D fruitCollider) {
+    GameObject.Destroy(fruitCollider.gameObject);
+  }
 }
