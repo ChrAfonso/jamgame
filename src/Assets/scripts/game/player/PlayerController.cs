@@ -2,14 +2,11 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-<<<<<<< HEAD
   public AudioClip fxCollectFruit;
-=======
 
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
-
->>>>>>> FETCH_HEAD
+  
   public float Speed { get; set; } // TODO: set default speed, if sped up/slowed down by jam, ease back into default speed slowly?
   public Vector3 Direction { get; set; }
   private float DDirection;
