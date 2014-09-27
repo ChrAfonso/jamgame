@@ -9,7 +9,7 @@ public class MusicManager : MonoBehaviour {
   public AudioClip clipCountdown;
   public AudioClip clipGame;
   public AudioClip clipCredits;
-  public AudioClip clipGameover;
+  public AudioClip clipGameOver;
 
   public enum Theme {
     Intro, 
@@ -27,6 +27,22 @@ public class MusicManager : MonoBehaviour {
 
 	  case Theme.Countdown:
 			audio.clip = clipCountdown;
+			break;
+	  
+	  case Theme.Countdown:
+			audio.clip = clipCountdown;
+			break;
+
+	  case Theme.Game:
+			audio.clip = clipGame;
+			break;
+
+	  case Theme.Credits:
+			audio.clip = clipCredits;
+			break;
+
+	  case Theme.GameOver:
+			audio.clip = clipGameOver;
 			break;
     }
 
