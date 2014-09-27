@@ -22,14 +22,15 @@ public class PlayerController : MonoBehaviour {
   private float DDirection;
   public float DirectionChangeSpeed { get; set; }
 
-  private float SpeedDefault = 4;
-  private float Acceleration = 2;
+  public float SpeedDefault = 4;
+  public float Acceleration = 2;
+  public float FallSlowdown = 4;
 
   private float SlippingTimer = -1;
-  private float SlippingDuration = 2000;
+  public float SlippingDuration = 2;
 
   private float FlyTimer = 0;
-  private float FlyDuration = 2000;
+  public float FlyDuration = 2;
 
   // Use this for initialization
   public void Start () {
