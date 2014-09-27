@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour {
       transform.position = OriginalPosition;
     }
 
-  public void Start() {
     currentState = controlState.GAME;
 
     Speed = 0;
