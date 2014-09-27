@@ -94,6 +94,9 @@ public class PlayerController : MonoBehaviour {
       case "borders":
         // TODO: set control state
         break;
+      case "jam":
+        // TODO: change speed etc.
+        break;
     }
   }
 
