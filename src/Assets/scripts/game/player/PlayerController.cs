@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
   
   // Use this for initialization
   public void Start () {
-    Speed = 5;
+    Speed = 2;
     Direction = new Vector3(1, 0, 0);
     DirectionChangeSpeed = 200;
   }
