@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour {
   public AudioClip fxCollectFruit;
   public AudioClip fxFly;
   public AudioClip fxDestroy;
+  public AudioClip fxBump;
+
+  public float breakFastPushForce = 100;
 
   public KeyCode keyLeft = KeyCode.LeftArrow;
   public KeyCode keyRight = KeyCode.RightArrow;
@@ -44,6 +47,7 @@ public class PlayerController : MonoBehaviour {
       transform.position = OriginalPosition;
     }
 
+  public void Start() {
     currentState = controlState.GAME;
 
     Speed = 0;
@@ -66,7 +70,7 @@ public class PlayerController : MonoBehaviour {
   }
 
   // Update is called once per frame
-  public void Update () {
+  public void Update() {
     switch (currentState) {
       case controlState.GAME:
         UpdateStateGame();
@@ -114,7 +118,7 @@ public class PlayerController : MonoBehaviour {
 
   private void UpdateStateFlying() {
     if (FlyTimer == 0) {
-	  audio.PlayOneShot(fxFly);
+      audio.PlayOneShot(fxFly);
     }
 
     float scale = 0.5f * (1 - Mathf.Pow(FlyTimer / FlyDuration, 2));
@@ -123,7 +127,7 @@ public class PlayerController : MonoBehaviour {
     FlyTimer += Time.deltaTime;
 
     if (FlyTimer > FlyDuration) {
-	  audio.PlayOneShot(fxFly);
+      audio.PlayOneShot(fxFly);
       // TODO hide jar, show broken mess? (visible?)
 
       setControlState(controlState.GAMEOVER);
@@ -152,19 +156,30 @@ public class PlayerController : MonoBehaviour {
   public void OnCollisionEnter2D(Collision2D collision) {
     Debug.Log("OnCollisionEnter2D: " + collision.gameObject.name);
     switch (collision.gameObject.tag) {
-       case "breakfast":
+      case "breakfast":
         HandleCollisionWithBreakfast(collision);
-         break;
-     }
+        break;
+    }
   }
 
   private void HandleCollisionWithBreakfast(Collision2D other) {
-    
+
+
+    if (other.contacts.Length > 0) {
+      Direction = other.contacts[0].normal;
+
+      Vector2 otherNormal = other.contacts[0].normal;
+      Direction = otherNormal;
+      other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);      
+		
+	  audio.PlayOneShot(fxBump);
+
+    }
   }
 
   private void CollectFruit(Collider2D fruitCollider) {
     GameObject.Destroy(fruitCollider.gameObject);
-		audio.PlayOneShot(fxCollectFruit);
+    audio.PlayOneShot(fxCollectFruit);
   }
 
   private void UpdateSpeed(obstacle Obstacle) {

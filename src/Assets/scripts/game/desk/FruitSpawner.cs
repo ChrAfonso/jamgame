@@ -7,6 +7,8 @@ public class FruitSpawner : MonoBehaviour {
 
   public List<GameObject> prefabs;
 
+  public AudioClip fxFruitspawner;
+
   public float spawnIntervalMin = 3;
   public float spawnIntervalMax = 6;
   public float destroyDelayMin = 4;
@@ -17,11 +19,11 @@ public class FruitSpawner : MonoBehaviour {
   public bool SpawningEnabled {
     get { return spawningEnabled; }
     set {
-      if (spawningEnabled == false) {
-        spawningEnabled = value;
+      spawningEnabled = value;
+      if (spawningEnabled) {
         StartCoroutine(SpawnFruits());
       } else {
-        spawningEnabled = value;
+        StopAllCoroutines();
       }
     }
   }
@@ -39,6 +41,7 @@ public class FruitSpawner : MonoBehaviour {
 
       if (SpawningEnabled) {
         SpawnFruitAtRandomPosition();
+		audio.PlayOneShot(fxFruitspawner);
       }
     }
   }
@@ -59,6 +62,6 @@ public class FruitSpawner : MonoBehaviour {
     float delay = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
     GameObject.Destroy(goFruit, delay);
   }
-  
+
 
 }
