@@ -106,7 +106,10 @@ public class GameController : MonoBehaviour {
   }
 
   public void OnPlayerDead() {
-    Players.ForEach(player => GameObject.Destroy(player.gameObject));
+    Players.ForEach(player => {
+      player.DestroyTrail();
+      GameObject.Destroy(player.gameObject);
+    });
     Players.Clear();
 
     ChangeState("GameStateGameOver");

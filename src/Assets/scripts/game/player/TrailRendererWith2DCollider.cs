@@ -29,6 +29,8 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
   private LinkedList<Vertex> leftVertices;        //the left vertices derived from the center positions
   private LinkedList<Vertex> rightVertices;       //the right vertices derived from the center positions
 
+  public GameObject TrailObject { get; set; }
+
   //************
   //
   // Public Methods
@@ -67,13 +69,13 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
 
   private void Awake() {
     //create an object and mesh for the trail
-    GameObject trail = new GameObject("Trail", new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) });
-    mesh = trail.GetComponent<MeshFilter>().mesh = new Mesh();
-    trail.renderer.material = trailMaterial;
-    trail.tag = tag;
+    TrailObject = new GameObject("Trail", new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) });
+    mesh = TrailObject.GetComponent<MeshFilter>().mesh = new Mesh();
+    TrailObject.renderer.material = trailMaterial;
+    TrailObject.tag = tag;
 
     //get and set the polygon collider on this trail.
-    collider = trail.GetComponent<PolygonCollider2D>();
+    collider = TrailObject.GetComponent<PolygonCollider2D>();
     collider.isTrigger = colliderIsTrigger;
     collider.SetPath(0, null);
 

@@ -205,6 +205,7 @@ public class PlayerController : MonoBehaviour {
         CollectFruit(other);
         break;
       case "borders":
+        JamTrail.pausing = true;
         setControlState(controlState.FLYING);
         break;
       case "jam":
@@ -259,5 +260,9 @@ public class PlayerController : MonoBehaviour {
 
   private void StartSlipping() {
     SlippingTimer = 0;
+  }
+
+  public void DestroyTrail() {
+    GameObject.Destroy(JamTrail.TrailObject);
   }
 }
