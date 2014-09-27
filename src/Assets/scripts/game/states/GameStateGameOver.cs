@@ -18,7 +18,7 @@ using UnityEngine;
     }
 
     public override void OnEnter(object onEnterParams = null) {
-	  GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.GameOver);
+	  GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.GameOver1);
       // TODO: activate player 1 OR player 2 win screen
       goWin.SetActive(true);
     }
