@@ -13,6 +13,7 @@ public class GameStatePlaying : AbstractState {
   }
 
   public override void OnEnter(object onEnterParams = null) {
+    GameController.Instance.CreatePlayers();
     GameController.Instance.BreakfastSpawner.Spawn();
     GameController.Instance.FruitSpawner.SpawningEnabled = true;
   }

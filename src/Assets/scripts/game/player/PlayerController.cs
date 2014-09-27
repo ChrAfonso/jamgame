@@ -82,7 +82,6 @@ public class PlayerController : MonoBehaviour {
     currentState = controlState.GAME;
 
     Speed = 0;
-    Direction = new Vector3(1, 0, 0);
     DirectionChangeSpeed = 360;
     DDirection = 0;
     SlippingTimer = -1;
@@ -121,8 +120,7 @@ public class PlayerController : MonoBehaviour {
         UpdateStateFlying();
         break;
       case controlState.GAMEOVER:
-        // TEMP instant reset
-        setControlState(controlState.GAME);
+        // TODO trigger game state change
         break;
     }
 
