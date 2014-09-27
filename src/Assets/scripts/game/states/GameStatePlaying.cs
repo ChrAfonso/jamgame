@@ -15,10 +15,11 @@ using System.Text;
 
     public override void OnEnter(object onEnterParams = null) {
       GameController.Instance.BreakfastSpawner.Spawn();
+      GameController.Instance.FruitSpawner.SpawningEnabled = true;
     }
 
     public override void OnLeave() {
-      
+      GameController.Instance.FruitSpawner.SpawningEnabled = false;
     }
 
     public override void OnUpdate() {

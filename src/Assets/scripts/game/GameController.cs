@@ -21,6 +21,13 @@ public class GameController : MonoBehaviour {
     }
   }
 
+  public FruitSpawner fruitSpawner;
+  public FruitSpawner FruitSpawner {
+    get {
+      return fruitSpawner;
+    }
+  }
+
   private static GameController instance;
   public static GameController Instance {
     get {
