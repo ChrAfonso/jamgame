@@ -6,6 +6,10 @@ public class PlayerController : MonoBehaviour {
   public AudioClip fxFly;
   public AudioClip fxDestroy;
   public AudioClip fxBump;
+  public AudioClip fxSlip;
+
+  public AudioSource runLoop;
+  public AudioSource slideLoop;
 
   public float breakFastPushForce = 100;
 
@@ -52,17 +56,27 @@ public class PlayerController : MonoBehaviour {
     Speed = 0;
     Direction = new Vector3(1, 0, 0);
     DirectionChangeSpeed = 360;
+    DDirection = 0;
+    SlippingTimer = -1;
+    FlyTimer = 0;
+
+    runLoop.Play();
+    slideLoop.Stop();
   }
 
   public void setControlState(controlState NewState) {
     if(NewState == controlState.GAME) {
-      Start(); // TEMP
+      Start();
     } else if (currentState == controlState.GAME && NewState == controlState.FLYING) {
       print("Aaaaaaaaaah!");
+      runLoop.Stop();
+      slideLoop.Stop();
       FlyTimer = 0;
       currentState = NewState;
     } else if (NewState == controlState.GAMEOVER) {
       print("GameOver!");
+      runLoop.Stop();
+      slideLoop.Stop();
       FlyTimer = 0;
       currentState = NewState;
     }
@@ -111,6 +125,9 @@ public class PlayerController : MonoBehaviour {
       SlippingTimer += Time.deltaTime;
       if (SlippingTimer > SlippingDuration) {
         SlippingTimer = -1;
+
+        runLoop.Play();
+        slideLoop.Stop();
       }
     }
 
@@ -129,7 +146,7 @@ public class PlayerController : MonoBehaviour {
     FlyTimer += Time.deltaTime;
 
     if (FlyTimer > FlyDuration) {
-      audio.PlayOneShot(fxFly);
+      audio.PlayOneShot(fxDestroy);
       // TODO hide jar, show broken mess? (visible?)
 
       setControlState(controlState.GAMEOVER);
@@ -150,6 +167,8 @@ public class PlayerController : MonoBehaviour {
         break;
       case "jam":
         print("Wheeeeeeee!");
+        runLoop.Stop();
+        slideLoop.Play();
         UpdateSpeed(obstacle.SLIPPERY);
         break;
     }
