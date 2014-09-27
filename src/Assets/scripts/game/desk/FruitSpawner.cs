@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FruitSpawner : MonoBehaviour {
 
-  public GameObject prefabFruit;
+  public List<GameObject> prefabs;
 
   public float spawnIntervalMin = 3;
   public float spawnIntervalMax = 6;
@@ -26,6 +26,12 @@ public class FruitSpawner : MonoBehaviour {
     }
   }
 
+  private System.Random Random { get; set; }
+
+  public void Awake() {
+    Random = new System.Random();
+  }
+
   private IEnumerator SpawnFruits() {
     while (SpawningEnabled) {
       float delay = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
@@ -39,6 +45,8 @@ public class FruitSpawner : MonoBehaviour {
 
   private void SpawnFruitAtRandomPosition() {
     Playground playground = GameController.Instance.Playground;
+
+    GameObject prefabFruit = prefabs[Random.Next(prefabs.Count)];
 
     GameObject goFruit = GameObject.Instantiate(prefabFruit) as GameObject;
     goFruit.transform.parent = transform;

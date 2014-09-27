@@ -79,4 +79,20 @@ public class PlayerController : MonoBehaviour {
       setControlState(controlState.GAMEOVER);
     }
   }
+
+  public void OnTriggerEnter2D(Collider2D other) {
+    Debug.Log("OnTriggerEnter2D: " + other.name);
+    switch (other.gameObject.tag) {
+      case "fruit":
+        CollectFruit(other);
+        break;
+      case "borders":
+        // TODO: set control state
+        break;
+    }
+  }
+
+  private void CollectFruit(Collider2D fruitCollider) {
+    GameObject.Destroy(fruitCollider.gameObject);
+  }
 }
