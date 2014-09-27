@@ -103,7 +103,10 @@ public class PlayerController : MonoBehaviour {
       TurnDirection = DDirection;
     } else {
       // twist direction during slipping
-      TurnDirection = Mathf.Sin(SlippingTimer / SlippingDuration * 8 * Mathf.PI) * (1 - SlippingTimer / SlippingDuration);
+      float SlippingAmount = 1 - (SlippingTimer / SlippingDuration);
+      float Correction = -0.045f;
+      TurnDirection = (SlippingAmount * (Mathf.Sin((1 - SlippingAmount) * 16 * Mathf.PI) + Correction)) 
+        + ((1 - SlippingAmount) * DDirection);
 
       SlippingTimer += Time.deltaTime;
       if (SlippingTimer > SlippingDuration) {
