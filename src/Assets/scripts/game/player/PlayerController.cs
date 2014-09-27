@@ -21,8 +21,9 @@ public class PlayerController : MonoBehaviour {
   public controlState currentState { get; private set; }
 
   public enum obstacle { SLIPPERY, STICKY };
-  public const float SPEED_SLIPPERY = 7;
-  public const float SPEED_STICKY = 2;
+  public float SpeedupOnSlip = 1.5f;
+  public float Speed_Slippery = 7;
+  public float Speed_Sticky = 2;
 
   private Vector3 OriginalPosition;
   private float DefaultScale = -1;
@@ -221,13 +222,12 @@ public class PlayerController : MonoBehaviour {
   }
 
   private void HandleCollisionWithBreakfast(Collision2D other) {
-
-
     if (other.contacts.Length > 0) {
       Direction = other.contacts[0].normal;
 
       Vector2 otherNormal = other.contacts[0].normal;
       Direction = otherNormal;
+      Speed = 0;
       other.rigidbody.AddForce(otherNormal * -1f * breakFastPushForce);
 
       audio.PlayOneShot(fxBump);
@@ -244,11 +244,11 @@ public class PlayerController : MonoBehaviour {
   private void UpdateSpeed(obstacle Obstacle) {
     switch (Obstacle) {
       case obstacle.SLIPPERY:
-        Speed = SPEED_SLIPPERY;
+        Speed *= SpeedupOnSlip;
         StartSlipping();
         break;
       case obstacle.STICKY:
-        Speed = SPEED_STICKY;
+        Speed = Speed_Sticky;
         break;
     }
   }
