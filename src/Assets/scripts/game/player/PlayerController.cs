@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 
   public enum obstacle { SLIPPERY, STICKY };
   public float SpeedupOnSlip = 1.5f;
-  public float Speed_Slippery = 7;
+  public float MaxSpeed_Slippery = 7;
   public float Speed_Sticky = 2;
 
   private Vector3 OriginalPosition;
@@ -344,6 +344,7 @@ public class PlayerController : MonoBehaviour {
     switch (Obstacle) {
       case obstacle.SLIPPERY:
         Speed *= SpeedupOnSlip;
+        Speed = Mathf.Min(Speed, MaxSpeed_Slippery);
         StartSlipping();
         break;
       case obstacle.STICKY:
