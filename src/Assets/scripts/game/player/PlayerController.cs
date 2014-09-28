@@ -257,7 +257,7 @@ public class PlayerController : MonoBehaviour {
     if (FlyTimer > FlyDuration) {
       audio.PlayOneShot(fxDestroy);
       // TODO hide jar, show broken mess? (visible?)
-
+      JamTrail.DestroyTrail();
       setControlState(controlState.GAMEOVER);
     }
 
