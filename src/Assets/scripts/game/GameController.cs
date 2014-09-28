@@ -6,6 +6,8 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
   public List<PlayerController> Players { get; private set; }
+  public List<KeyBinding> KeyBindings;
+  public List<Transform> SpawnPoints;
   public int numPlayers = 2;
   public GameObject PlayerPrefab;
 
@@ -69,39 +71,23 @@ public class GameController : MonoBehaviour {
   }
 
   public void CreatePlayers() {
-    Vector3 startPosition;
-    Vector3 startDirection;
-    KeyCode[] keyCodes;
-
     for (int p = 0; p < numPlayers; p++) {
-      Debug.Log("Create Player " + p);
+      Debug.Log("Create Player " + p + "...");
+      
+      if(p < SpawnPoints.Count && p < KeyBindings.Count) {
+        GameObject player = (GameObject)Instantiate(PlayerPrefab, SpawnPoints[p].position, Quaternion.identity);
+        PlayerController controller = (PlayerController)player.GetComponent<PlayerController>();
+        controller.keyLeft = KeyBindings[p].keyLeft;
+        controller.keyRight = KeyBindings[p].keyRight;
+        controller.keyJam = KeyBindings[p].keyJam;
 
-      // dirty!
-      switch(p) {
-        case 0:
-          startPosition = Playground.player1_spawn.position;
-          startDirection = Playground.player1_spawn.rotation * Vector3.right;
-          keyCodes = new KeyCode[3] { KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.DownArrow };
-          break;
-        case 1:
-          startPosition = Playground.player2_spawn.position;
-          startDirection = Playground.player2_spawn.rotation * Vector3.right;
-          keyCodes = new KeyCode[3] { KeyCode.A, KeyCode.D, KeyCode.S };
-          break;
-        default:
-          Debug.LogError("Could not create " + numPlayers + " players!");
-          return;
+        controller.Direction = SpawnPoints[p].rotation * Vector3.right;
+
+        Players.Add(controller);
+      } else {
+        Debug.LogError("Not enough SpawnPoints/KeyBindings defined for player " + p +"!");
+        return;
       }
-
-      GameObject player = (GameObject) Instantiate(PlayerPrefab, startPosition, Quaternion.identity);
-      PlayerController controller = (PlayerController) player.GetComponent<PlayerController>();
-      controller.keyLeft = keyCodes[0];
-      controller.keyRight = keyCodes[1];
-      controller.keyJam = keyCodes[2];
-
-      controller.Direction = startDirection;
-
-      Players.Add(controller);
     }
   }
 
