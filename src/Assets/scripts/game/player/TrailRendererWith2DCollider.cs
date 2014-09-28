@@ -25,6 +25,8 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
   private Mesh mesh;
   private new PolygonCollider2D collider;
 
+  public AudioClip fxGulp;
+
   private LinkedList<Vector3> centerPositions;    //the previous positions of the object this script is attached to
   private LinkedList<Vertex> leftVertices;        //the left vertices derived from the center positions
   private LinkedList<Vertex> rightVertices;       //the right vertices derived from the center positions
@@ -81,6 +83,7 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
     TrailObject = new GameObject("Trail", new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) });
     mesh = TrailObject.GetComponent<MeshFilter>().mesh = new Mesh();
     TrailObject.renderer.material = trailMaterial;
+	audio.PlayOneShot(fxGulp);
     TrailObject.tag = tag;
 
     //get and set the polygon collider on this trail.

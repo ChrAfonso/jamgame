@@ -14,6 +14,7 @@ public class GameStatePlaying : AbstractState {
 
   public override void OnEnter(object onEnterParams = null) {
     GameController.Instance.CreatePlayers();
+    GameController.Instance.UpdateLifeBars();
     GameController.Instance.BreakfastSpawner.Spawn();
     GameController.Instance.FruitSpawner.SpawningEnabled = true;
 	GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.Game1);

@@ -32,6 +32,7 @@ using UnityEngine;
       goTitle.SetActive(true);
       GameController.Instance.BreakfastSpawner.Cleanup();
       GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.Intro);
+      GameController.Instance.ResetLives();
     }
 
     public override void OnLeave() {
