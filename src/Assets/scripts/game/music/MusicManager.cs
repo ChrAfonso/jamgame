@@ -28,6 +28,7 @@ public class MusicManager : MonoBehaviour {
 
       case Theme.Intro:
             audio.clip = clipIntro;
+			audio.loop = true;
             break;
 			  
 	  case Theme.Countdown:
@@ -48,14 +49,15 @@ public class MusicManager : MonoBehaviour {
 
 	  case Theme.GameOver1:
 			audio.clip = clipGameOver1;
+			audio.loop = false;
 			break;
 
 	  case Theme.GameOver2:
 			audio.clip = clipGameOver2;
+			audio.loop = false;
 			break;
     }
 
-    audio.loop = true;
     audio.Play();
   }
 }
