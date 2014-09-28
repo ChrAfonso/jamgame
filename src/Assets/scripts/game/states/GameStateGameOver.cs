@@ -23,9 +23,9 @@ public class GameStateGameOver : AbstractState {
     int playerIndex = onEnterParams != null ? (int)onEnterParams : 0;
 
     goWin.SetActive(true);
-    WinScreen.ShowWinScreenForPlayer(playerIndex);
+    WinScreen.ShowWinScreenForPlayer(playerIndex % 2);
 
-    if (playerIndex == 0) {
+    if (playerIndex % 2 ==  0) {
       GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.GameOver1);
     } else {
       GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.GameOver2);
