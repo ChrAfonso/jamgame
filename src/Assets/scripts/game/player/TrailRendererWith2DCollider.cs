@@ -73,11 +73,15 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
     CreateTrail();
   }
 
-  public void CreateTrail() {
+  public void DestroyTrail() {
     if (TrailObject != null) {
       float timeToLive = lifeTime - changeTime;
       GameObject.Destroy(TrailObject, timeToLive);
     }
+  }
+
+  public void CreateTrail() {
+    DestroyTrail();
 
     //create an object and mesh for the trail
     TrailObject = new GameObject("Trail", new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) });
@@ -106,6 +110,8 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
 
     leftVertices = new LinkedList<Vertex>();
     rightVertices = new LinkedList<Vertex>();
+
+    GameObject.Destroy(TrailObject, lifeTime);
   }
 
   private void Update() {
