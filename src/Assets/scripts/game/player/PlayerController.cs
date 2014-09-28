@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour {
   public AudioSource slideLoop;
 
   public float breakFastPushForce = 100;
+  public float playerPushForce = 200;
+  public float playerReactivationDelayAfterPush = 0.5f;
+  public float gameOverAngularVelocity = 100.0f;
 
   public KeyCode keyLeft = KeyCode.LeftArrow;
   public KeyCode keyRight = KeyCode.RightArrow;
@@ -46,10 +49,16 @@ public class PlayerController : MonoBehaviour {
   public float jamFillMin;
   public float jamFillMax;
   public Transform transformSpriteJam;
+
+  [Range(0, 1)]
   public float reloadPercentagePerFruit = 0.3f;
 
+  [Range(0, 1)]
   public float jamConsumptionPerSecond = 0.1f;
   public float jamTrailDeactivationDelay = 2.0f;
+
+  [Range(0, 1)]
+  public float initialJamFillPercentage = 0;
 
   private float jamFillPercentage;
   public float JamFillPercentage {
@@ -94,7 +103,7 @@ public class PlayerController : MonoBehaviour {
     DDirection = 0;
     SlippingTimer = -1;
     FlyTimer = 0;
-    JamFillPercentage = 1;
+    JamFillPercentage = initialJamFillPercentage;
     IsDead = false;
     JamTrail.pausing = true;
 
@@ -107,6 +116,8 @@ public class PlayerController : MonoBehaviour {
       Start();
     } else if (currentState == controlState.GAME && NewState == controlState.FLYING) {
       Debug.Log("Aaaaaaaaaah!");
+      JamTrail.pausing = true;
+      StartFalling();
       runLoop.Stop();
       slideLoop.Stop();
       FlyTimer = 0;
@@ -118,6 +129,19 @@ public class PlayerController : MonoBehaviour {
       FlyTimer = 0;
       currentState = NewState;
     }
+  }
+
+  private void StartFalling() {
+    rigidbody2D.isKinematic = false;
+    Playground playground = GameController.Instance.Playground;
+    Vector3 currentPosition = transform.position;
+    if (currentPosition.y > playground.MaxY && currentPosition.x > playground.MinX && currentPosition.x < playground.MaxX) {
+      rigidbody2D.gravityScale = -1;
+    } else {
+      rigidbody2D.gravityScale = 1;
+    }
+    rigidbody2D.fixedAngle = false;
+    rigidbody2D.angularVelocity = gameOverAngularVelocity;
   }
 
   // Update is called once per frame
@@ -229,7 +253,7 @@ public class PlayerController : MonoBehaviour {
         CollectFruit(other);
         break;
       case "borders":
-        JamTrail.pausing = true;
+        
         setControlState(controlState.FLYING);
         break;
       case "jam":
@@ -238,7 +262,34 @@ public class PlayerController : MonoBehaviour {
         slideLoop.Play();
         UpdateSpeed(obstacle.SLIPPERY);
         break;
+      case "player":
+        HandleCollisionWithPlayer(other);
+        break;
     }
+  }
+
+  private void HandleCollisionWithPlayer(Collider2D other) {
+    PlayerController otherPlayer = other.gameObject.GetComponent<PlayerController>();
+    //otherPlayer.StartSlipping();
+    //StartSlipping();
+    Vector3 changedDirection = other.transform.position - transform.position;
+    //changedDirection = changedDirection.normalized;
+    //Direction = changedDirection;
+    //otherPlayer.Direction = changedDirection * -1.0f;
+
+    
+    StartCoroutine(PushPlayer(changedDirection, playerPushForce, playerReactivationDelayAfterPush));
+    otherPlayer.StartCoroutine(PushPlayer(changedDirection * -1f, playerPushForce, playerReactivationDelayAfterPush));
+
+    // TODO: audio - play player vs. player collision fx
+  }
+
+  private IEnumerator PushPlayer(Vector2 direction, float force, float reactivationDelay) {
+    rigidbody2D.isKinematic = false;
+    rigidbody2D.AddForce(direction * force);
+    Direction = direction;
+    yield return new WaitForSeconds(reactivationDelay);
+    rigidbody2D.isKinematic = true;
   }
 
   public void OnCollisionEnter2D(Collision2D collision) {
