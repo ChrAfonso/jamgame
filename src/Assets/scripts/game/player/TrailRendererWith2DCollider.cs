@@ -77,13 +77,13 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
     if (TrailObject != null) {
       float timeToLive = lifeTime - changeTime;
       GameObject.Destroy(TrailObject, timeToLive);
-	  audio.PlayOneShot(fxGulp);
     }
 
     //create an object and mesh for the trail
     TrailObject = new GameObject("Trail", new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) });
     mesh = TrailObject.GetComponent<MeshFilter>().mesh = new Mesh();
     TrailObject.renderer.material = trailMaterial;
+	audio.PlayOneShot(fxGulp);
     TrailObject.tag = tag;
 
     //get and set the polygon collider on this trail.
