@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameStateGameOver : AbstractState {
 
   private GameObject goWin { get; set; }
+  private WinScreen WinScreen { get; set; }
 
   public GameStateGameOver(string stateName)
     : base(stateName) {
@@ -14,6 +15,7 @@ public class GameStateGameOver : AbstractState {
 
   public override void OnInitialize() {
     goWin = GameObject.Find("ui/win");
+    WinScreen = goWin.GetComponent<WinScreen>();
     goWin.SetActive(false);
   }
 
@@ -21,17 +23,12 @@ public class GameStateGameOver : AbstractState {
     int playerIndex = onEnterParams != null ? (int)onEnterParams : 0;
 
     goWin.SetActive(true);
-    GameObject goWinPlayer0 = goWin.transform.Find("player_1").gameObject;
-    GameObject goWinPlayer1 = goWin.transform.Find("player_2").gameObject;
+    WinScreen.ShowWinScreenForPlayer(playerIndex);
 
     if (playerIndex == 0) {
       GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.GameOver1);
-      goWinPlayer0.SetActive(true);
-      goWinPlayer1.SetActive(false);
     } else {
       GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.GameOver2);
-      goWinPlayer0.SetActive(false);
-      goWinPlayer1.SetActive(true);
     }
   }
 
