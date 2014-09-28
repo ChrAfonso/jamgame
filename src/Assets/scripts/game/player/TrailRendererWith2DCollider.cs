@@ -83,7 +83,13 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
     TrailObject = new GameObject("Trail", new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) });
     mesh = TrailObject.GetComponent<MeshFilter>().mesh = new Mesh();
     TrailObject.renderer.material = trailMaterial;
-	audio.PlayOneShot(fxGulp);
+    Vector3 trailObjectPosition = TrailObject.transform.position;
+    trailObjectPosition.z = -1;
+    TrailObject.transform.position = trailObjectPosition;
+
+    AudioSource trailObjectAudioSource = TrailObject.AddComponent<AudioSource>();
+    trailObjectAudioSource.PlayOneShot(fxGulp);
+    
     TrailObject.tag = tag;
 
     //get and set the polygon collider on this trail.
