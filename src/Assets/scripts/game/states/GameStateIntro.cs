@@ -72,6 +72,6 @@ using UnityEngine;
     }
 
     private void StartGame() {
-      GameController.Instance.ChangeState("GameStatePlaying");
+      GameController.Instance.ChangeState("GameStateCountdown");
     } 
   }

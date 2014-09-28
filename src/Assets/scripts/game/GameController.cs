@@ -65,6 +65,7 @@ public class GameController : MonoBehaviour {
     states.Add(new GameStatePlaying("GameStatePlaying"));
     states.Add(new GameStateGameOver("GameStateGameOver"));
     states.Add(new GameStateCredits("GameStateCredits"));
+    states.Add(new GameStateCountdown("GameStateCountdown"));
 
     StateMachine = StateMachine.Create("state_machine", states, "GameStateIntro");
 
