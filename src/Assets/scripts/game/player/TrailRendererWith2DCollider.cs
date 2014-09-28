@@ -92,6 +92,7 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
     TrailObject.transform.position = trailObjectPosition;
 
     AudioSource trailObjectAudioSource = TrailObject.AddComponent<AudioSource>();
+    trailObjectAudioSource.rolloffMode = AudioRolloffMode.Linear;
     trailObjectAudioSource.PlayOneShot(fxGulp);
     
     TrailObject.tag = tag;
