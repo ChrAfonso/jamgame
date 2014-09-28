@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
   public float Speed_Sticky = 2;
 
   private Vector3 OriginalPosition;
+  private Vector3 OriginalDirection;
   private float DefaultScale = -1;
   public float Speed { get; set; }
 
@@ -90,12 +91,21 @@ public class PlayerController : MonoBehaviour {
 
   // Use this for initialization
   public void Start() {
+    stopFalling();
+
     if (DefaultScale == -1) {
       DefaultScale = transform.localScale.x;
       OriginalPosition = transform.position;
+      OriginalDirection = Direction;
     } else {
       transform.localScale = Vector3.one * DefaultScale;
       transform.position = OriginalPosition;
+      Direction = OriginalDirection;
+      if (Direction.x > 0) {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+      } else {
+        transform.rotation = Quaternion.Euler(0, 180, 0);
+      }
     }
 
     currentState = controlState.GAME;
@@ -144,6 +154,13 @@ public class PlayerController : MonoBehaviour {
     }
     rigidbody2D.fixedAngle = false;
     rigidbody2D.angularVelocity = gameOverAngularVelocity;
+  }
+
+  private void stopFalling() {
+    rigidbody2D.isKinematic = true;
+    rigidbody2D.gravityScale = 0;
+    rigidbody2D.fixedAngle = true;
+    rigidbody2D.angularVelocity = 0;
   }
 
   // Update is called once per frame

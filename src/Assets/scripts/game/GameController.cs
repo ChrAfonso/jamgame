@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour {
     }
   }
 
-  public void CreatePlayers() {
+  public void CreatePlayers(int index = -1) {
     for (int p = 0; p < numPlayers; p++) {
       Debug.Log("Create Player " + p + "...");
       
@@ -94,6 +94,7 @@ public class GameController : MonoBehaviour {
 
         controller.Direction = SpawnPoints[p].rotation * Vector3.right;
 
+        controller.playerIndex = p;
         Players.Add(controller);
       } else {
         Debug.LogError("Not enough SpawnPoints/KeyBindings defined for player " + p +"!");
@@ -113,17 +114,20 @@ public class GameController : MonoBehaviour {
   public void OnPlayerDead(int playerIndex) {
     livesLeft[playerIndex]--;
 
-    Players.ForEach(player => {
-      player.DestroyTrail();
-      GameObject.Destroy(player.gameObject);
-    });
-    Players.Clear();
-    
     List<int> playersLeft = PlayersLeft();
     if (playersLeft.Count < 2) {
-      ChangeState("GameStateGameOver"); // TODO pass winnign player index
+      Players.ForEach(player =>
+      {
+        player.DestroyTrail();
+        GameObject.Destroy(player.gameObject);
+      });
+      Players.Clear();
+
+      UpdateLifeBars();
+      ChangeState("GameStateGameOver", playersLeft[0]);
     } else {
-      ChangeState("GameStatePlaying");
+      UpdateLifeBars();
+      Players[playerIndex].Start(); // restart
     }
   }
 
