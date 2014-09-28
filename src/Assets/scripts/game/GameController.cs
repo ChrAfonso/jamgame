@@ -131,7 +131,12 @@ public class GameController : MonoBehaviour {
       ChangeState("GameStateGameOver", playersLeft[0]);
     } else {
       UpdateLifeBars();
-      Players[playerIndex].Start(); // restart
+
+      if (livesLeft[playerIndex] > 0) {
+        Players[playerIndex].Start(); // restart
+      } else {
+        // don't restart, but keep in list
+      }
     }
   }
 
