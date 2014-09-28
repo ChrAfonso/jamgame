@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
   public AudioClip fxDestroy;
   public AudioClip fxBump;
   public AudioClip fxSlip;
-
+  public AudioClip fxMarmeladeCollide;
   public AudioSource runLoop;
   public AudioSource slideLoop;
 
@@ -281,7 +281,7 @@ public class PlayerController : MonoBehaviour {
     StartCoroutine(PushPlayer(changedDirection, playerPushForce, playerReactivationDelayAfterPush));
     otherPlayer.StartCoroutine(PushPlayer(changedDirection * -1f, playerPushForce, playerReactivationDelayAfterPush));
 
-    // TODO: audio - play player vs. player collision fx
+	audio.PlayOneShot(fxMarmeladeCollide);
   }
 
   private IEnumerator PushPlayer(Vector2 direction, float force, float reactivationDelay) {

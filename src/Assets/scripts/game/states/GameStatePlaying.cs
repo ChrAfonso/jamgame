@@ -16,7 +16,7 @@ public class GameStatePlaying : AbstractState {
     GameController.Instance.CreatePlayers();
     GameController.Instance.BreakfastSpawner.Spawn();
     GameController.Instance.FruitSpawner.SpawningEnabled = true;
-	GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.Game);
+	GameController.Instance.MusicManager.PlayTrack(MusicManager.Theme.Game1);
   }
 
   public override void OnLeave() {

@@ -2,7 +2,18 @@ fileFormatVersion: 2
 guid: eeabac19c179e89408022e9aa20c51de
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - fxCollectFruit: {fileID: 8300000, guid: 31a693b7a11c1426299be4d08bbe3c0a, type: 3}
+  - fxFly: {fileID: 8300000, guid: e6e16ec530ce9428b9e7b42645453ed5, type: 3}
+  - fxDestroy: {fileID: 8300000, guid: eb4b430540f6f4efdb496b1c8f405efa, type: 3}
+  - fxBump: {fileID: 8300000, guid: b5831217ace5b45c893d559314ed2b7b, type: 3}
+  - fxSlip: {fileID: 8300000, guid: cc660da90433545c4875f4f9b4a3b580, type: 3}
+  - fxMarmeladeCollide: {fileID: 8300000, guid: 72a083da79b6641998a72263d5c63ee4,
+      type: 3}
+  - runLoop: {instanceID: 0}
+  - slideLoop: {instanceID: 0}
+  - transformSpriteJam: {instanceID: 0}
+  - jamTrail: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
