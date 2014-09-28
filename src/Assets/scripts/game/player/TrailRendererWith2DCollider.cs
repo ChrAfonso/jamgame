@@ -70,7 +70,7 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
   //************
 
   private void Awake() {
-    CreateTrail();
+    
   }
 
   public void DestroyTrail() {
