@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour {
   public List<PlayerController> Players { get; private set; }
   public List<KeyBinding> KeyBindings;
   public List<Transform> SpawnPoints;
+  public List<Sprite> PlayerSprites;
   public List<Transform> LifeBars;
   public int numPlayers = 2;
   public GameObject PlayerPrefab;
@@ -85,7 +86,7 @@ public class GameController : MonoBehaviour {
     for (int p = 0; p < numPlayers; p++) {
       Debug.Log("Create Player " + p + "...");
       
-      if(p < SpawnPoints.Count && p < KeyBindings.Count) {
+      if(p < SpawnPoints.Count && p < KeyBindings.Count && p < PlayerSprites.Count) {
         GameObject player = (GameObject)Instantiate(PlayerPrefab, SpawnPoints[p].position, Quaternion.identity);
         PlayerController controller = (PlayerController)player.GetComponent<PlayerController>();
         controller.keyLeft = KeyBindings[p].keyLeft;
@@ -95,9 +96,11 @@ public class GameController : MonoBehaviour {
         controller.Direction = SpawnPoints[p].rotation * Vector3.right;
 
         controller.playerIndex = p;
+        player.GetComponentInChildren<SpriteRenderer>().sprite = PlayerSprites[p];
+
         Players.Add(controller);
       } else {
-        Debug.LogError("Not enough SpawnPoints/KeyBindings defined for player " + p +"!");
+        Debug.LogError("Not enough SpawnPoints/KeyBindings/PlayerSprites defined for player " + p + "!");
         return;
       }
     }
