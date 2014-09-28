@@ -14,6 +14,8 @@ public class FruitSpawner : MonoBehaviour {
   public float destroyDelayMin = 4;
   public float destroyDelayMax = 10;
 
+  public float SpawnScale = 0.7f;
+
   private bool spawningEnabled;
 
   public bool SpawningEnabled {
@@ -58,6 +60,8 @@ public class FruitSpawner : MonoBehaviour {
     position.x = playground.MinX + UnityEngine.Random.value * (playground.MaxX - playground.MinX);
     position.y = playground.MinY + UnityEngine.Random.value * (playground.MaxY - playground.MinY);
     goFruit.transform.position = position;
+
+    goFruit.transform.localScale = Vector3.one * SpawnScale;
 
     float delay = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
     GameObject.Destroy(goFruit, delay);

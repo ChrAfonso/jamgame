@@ -5,6 +5,7 @@ using UnityEngine;
 public class BreakfastSpawner : MonoBehaviour {
 
   public int spawnCount = 3;
+  public float SpawnScale = 0.5f;
 
   public List<GameObject> prefabs;
 
@@ -49,6 +50,8 @@ public class BreakfastSpawner : MonoBehaviour {
     position.x = playground.MinX + UnityEngine.Random.value * (playground.MaxX - playground.MinX);
     position.y = playground.MinY + UnityEngine.Random.value * (playground.MaxY - playground.MinY);
     go.transform.position = position;
+
+    go.transform.localScale = Vector3.one * SpawnScale;
 
     return go;
   }
