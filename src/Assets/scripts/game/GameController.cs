@@ -8,8 +8,12 @@ public class GameController : MonoBehaviour {
   public List<PlayerController> Players { get; private set; }
   public List<KeyBinding> KeyBindings;
   public List<Transform> SpawnPoints;
+  public List<Transform> LifeBars;
   public int numPlayers = 2;
   public GameObject PlayerPrefab;
+
+  public int LivesPerPlayer = 10;
+  private List<int> livesLeft;
 
   public bool showMouse = false;
 
@@ -70,6 +74,13 @@ public class GameController : MonoBehaviour {
     StateMachine.ChangeState(stateName, onEnterParams);
   }
 
+  public void ResetLives() {
+    livesLeft = new List<int>();
+    for (int p = 0; p < numPlayers; p++) {
+      livesLeft.Add(LivesPerPlayer);
+    }
+  }
+
   public void CreatePlayers() {
     for (int p = 0; p < numPlayers; p++) {
       Debug.Log("Create Player " + p + "...");
@@ -91,13 +102,39 @@ public class GameController : MonoBehaviour {
     }
   }
 
-  public void OnPlayerDead() {
+  public void UpdateLifeBars() {
+    for (int p = 0; p < numPlayers; p++) {
+      Transform lifeBar = LifeBars[p];
+      LifeBarController controller = (LifeBarController) lifeBar.GetComponent<LifeBarController>();
+      controller.UpdateLives(LivesPerPlayer, livesLeft[p]);
+    }
+  }
+
+  public void OnPlayerDead(int playerIndex) {
+    livesLeft[playerIndex]--;
+
     Players.ForEach(player => {
       player.DestroyTrail();
       GameObject.Destroy(player.gameObject);
     });
     Players.Clear();
+    
+    List<int> playersLeft = PlayersLeft();
+    if (playersLeft.Count < 2) {
+      ChangeState("GameStateGameOver"); // TODO pass winnign player index
+    } else {
+      ChangeState("GameStatePlaying");
+    }
+  }
 
-    ChangeState("GameStateGameOver");
+  private List<int> PlayersLeft() {
+    List<int> result = new List<int>();
+    for (int p = 0; p < numPlayers; p++) {
+      if (livesLeft[p] > 0) {
+        result.Add(p);
+      }
+    }
+
+    return result;
   }
 }

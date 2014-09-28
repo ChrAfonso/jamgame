@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour {
   public KeyCode keyRight = KeyCode.RightArrow;
   public KeyCode keyJam = KeyCode.DownArrow;
 
+  public int playerIndex;
+
   public enum controlState { GAME, FLYING, GAMEOVER };
   public controlState currentState { get; private set; }
 
@@ -155,7 +157,7 @@ public class PlayerController : MonoBehaviour {
         break;
       case controlState.GAMEOVER:
         IsDead = true;
-        GameController.Instance.OnPlayerDead();
+        GameController.Instance.OnPlayerDead(playerIndex);
         break;
     }
 
