@@ -68,6 +68,15 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
   //************
 
   private void Awake() {
+    CreateTrail();
+  }
+
+  public void CreateTrail() {
+    if (TrailObject != null) {
+      float timeToLive = lifeTime - changeTime;
+      GameObject.Destroy(TrailObject, timeToLive);
+    }
+
     //create an object and mesh for the trail
     TrailObject = new GameObject("Trail", new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) });
     mesh = TrailObject.GetComponent<MeshFilter>().mesh = new Mesh();

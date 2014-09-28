@@ -184,6 +184,7 @@ public class PlayerController : MonoBehaviour {
 
     if (IsSpittingJam == false && Input.GetKeyUp(keyJam)) {
       IsSpittingJam = true;
+      JamTrail.CreateTrail();
       JamTrail.pausing = false;
       StartCoroutine(StopJamTrailWithDelay(jamTrailDeactivationDelay));
     }
