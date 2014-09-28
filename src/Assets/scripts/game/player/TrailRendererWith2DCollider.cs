@@ -25,6 +25,8 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
   private Mesh mesh;
   private new PolygonCollider2D collider;
 
+  public AudioClip fxGulp;
+
   private LinkedList<Vector3> centerPositions;    //the previous positions of the object this script is attached to
   private LinkedList<Vertex> leftVertices;        //the left vertices derived from the center positions
   private LinkedList<Vertex> rightVertices;       //the right vertices derived from the center positions
@@ -75,6 +77,7 @@ public class TrailRendererWith2DCollider : MonoBehaviour {
     if (TrailObject != null) {
       float timeToLive = lifeTime - changeTime;
       GameObject.Destroy(TrailObject, timeToLive);
+	  audio.PlayOneShot(fxGulp);
     }
 
     //create an object and mesh for the trail
