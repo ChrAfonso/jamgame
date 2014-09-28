@@ -7,9 +7,6 @@ public class Playground : MonoBehaviour {
   public Transform min;
   public Transform max;
 
-  public Transform player1_spawn;
-  public Transform player2_spawn;
-
   public float MinX {
     get {
       return min.position.x;
