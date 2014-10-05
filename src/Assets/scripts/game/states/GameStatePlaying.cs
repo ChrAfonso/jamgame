@@ -25,8 +25,8 @@ public class GameStatePlaying : AbstractState {
   }
 
   public override void OnUpdate() {
-    //if (Input.GetKeyUp(KeyCode.Escape)) {
-    //  GameController.Instance.ChangeState("GameStateIntro");
-    //}
+    if (Input.GetKeyUp(KeyCode.Escape)) {
+      GameController.Instance.ChangeState("GameStateIntro");
+    }
   }
 }

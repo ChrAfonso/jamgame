@@ -44,6 +44,10 @@ using UnityEngine;
         StartGame();
       }
 
+      if (Input.GetKeyUp(KeyCode.Escape)) {
+        Application.Quit();
+      }
+
       if (Input.GetMouseButtonUp(0)) {
         Vector2 mousePosition = Input.mousePosition;
         mousePosition.y = Screen.height - mousePosition.y;
