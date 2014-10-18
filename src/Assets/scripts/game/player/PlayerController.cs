@@ -89,6 +89,10 @@ public class PlayerController : MonoBehaviour {
 
   private bool IsSpittingJam { get; set; }
 
+  public Animator animatorFeet;
+
+  public float feetAnimationSpeed = 1.0f;
+
   // Use this for initialization
   public void Start() {
     stopFalling();
@@ -121,6 +125,8 @@ public class PlayerController : MonoBehaviour {
 
     runLoop.Play();
     slideLoop.Stop();
+
+    animatorFeet.speed = feetAnimationSpeed;
   }
 
   public void setControlState(controlState NewState) {
@@ -165,6 +171,7 @@ public class PlayerController : MonoBehaviour {
 
   // Update is called once per frame
   public void Update() {
+
     switch (currentState) {
       case controlState.GAME:
         UpdateStateGame();
@@ -231,6 +238,9 @@ public class PlayerController : MonoBehaviour {
       JamTrail.pausing = false;
       StartCoroutine(StopJamTrailWithDelay(jamTrailDeactivationDelay));
     }
+
+    // feet animation speed
+    animatorFeet.speed = feetAnimationSpeed * Speed;
   }
 
   private IEnumerator StopJamTrailWithDelay(float jamTrailDeactivationDelay) {
